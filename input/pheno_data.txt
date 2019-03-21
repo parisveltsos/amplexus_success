@@ -1,4 +1,4 @@
-id	sex	amplexus_dead	amplexus	l1	l2	w	date	year	time	day	field	pop	day_numeric	genotype
+id	sex	amplexus	amplexus2	l1	l2	w	date	year	time	day	field	pop	day_numeric	genotype
 M001	M	N	N	85.30	134.90	57.8	08/04/2014	2014	NA2	A	NA2	M	NA2	XX
 M002	M	N	N	86.60	129.90	62	08/04/2014	2014	NA2	A	NA2	M	NA2	YB2a 
 M003	M	N	N	84.60	122.90	51.5	08/04/2014	2014	NA2	A	NA2	M	NA2	XX

@@ -18,23 +18,22 @@ When all scripts are run, the output folder is <1 Mb.
 
 Run the script `scripts/amplexus.r`. Most of the analysis results are produced by this script.
 
-The data headers are
+The data headers are:
 
-id - individual ID
-sex - individual sex
-amplexus_dead - whether found in amplexus with a dead female
-amplexus - whether found in amplexus
-l1 - snout to vent length (cm)
-l2 - back-leg length (cm)
-w - body weight (g)
-date - date of measurement
-year - year of measurement
-time - time of measurement
-day - day batch of measurement
-field - measurement in field or lab (weight in lab is discarded)
-pop - population of individual (all are Meitreile)
-day_numeric - day of capture since beginning of season
-genotype - genotype characterisation. This is converted to haplotype-level of differentiation or Dmrt type, within the script.
+	**id** - individual ID
+	**sex** - individual sex
+	**amplexus** - whether found in amplexus with a dead female. A: normal amplexus, N: non-amplexus, AD: amplexus with dead female, AG: amplexus with male, D: dead individual
+	**l1** - snout to vent length (cm)
+	**l2** - back-leg length (cm)
+	**w** - body weight (g)
+	**date** - date of measurement
+	**year** - year of measurement
+	**time** - time of measurement
+	**day** - day batch of measurement
+	**field** - measurement in field or lab (weight in lab is discarded)
+	**pop** - population of individual (all are Meitreile)
+	**day_numeric** - day of capture since beginning of season
+	**genotype** - genotype characterisation. This is converted to haplotype-level of differentiation or Dmrt type, within the `amplexus.r` script (lines 47-61).
 
 ## Fathering success
 

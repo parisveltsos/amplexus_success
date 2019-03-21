@@ -30,13 +30,14 @@ plot(seq(1,7), rep(1,7), pch=16, cex=3, col=c(cbblue, cbred, cbpurple, cborange,
 # Analysis of phenotypic data from Meitreile
 datapath <- '~/git/amplexus_success/input'
 outpath <- '~/git/amplexus_success/output'
-frogdata <- read.table(file.path(outpath, 'pheno_data.txt'), header=T)
+frogdata <- read.table(file.path(datapath, 'pheno_data.txt'), header=T)
 
 str(frogdata)
 frogdata$year <- as.factor(frogdata$year)
 
 ### All data summarised by genotype
 summary(frogdata$genotype)
+tapply(frogdata$genotype, list(frogdata$amplexus), count) #summarise cloud mean by 2 factors,
 
 
 # frogdata <- subset(frogdata_All, frogdata_All$year==2015) 
@@ -94,17 +95,21 @@ sjt.xtab(YPlexusData$genodmrt, YPlexusData$amplexus, title='Continency table of 
 
 ## data where amplexus with dead and male male interactions are included
 dmrtPlot$amplexusAll <- dmrtPlot$amplexus
-dmrtPlot$amplexusAll[dmrtPlot$amplexusAll=='AG'] <- 'A'
-dmrtPlot$amplexusAll[dmrtPlot$amplexusAll=='D'] <- 'A'
-dmrtPlot$amplexusAll <- factor(dmrtPlot$amplexusAll)
-sjt.xtab(dmrtPlot$genodiff, dmrtPlot$amplexusAll, title='Continency table of Y differentiation by year', show.row.prc=T, show.legend=T, show.summary=T, file=file.path(outpath, 'contingency_genodiff_amplexusAll.html'))
-sjt.xtab(dmrtPlot$genodmrt, dmrtPlot$amplexusAll, title='Continency table of Y differentiation by year', show.row.prc=T, show.legend=T, show.summary=T, file=file.path(outpath, 'contingency_genodmrt_amplexusAll.html'))
+dmrtPlot$amplexusAll[dmrtPlot$amplexusAll=='A1'] <- 'A'
+dmrtPlot$amplexusAll[dmrtPlot$amplexusAll=='A2'] <- 'A'
+dmrtPlot$amplexusAll[dmrtPlot$amplexusAll=='AD1'] <- 'A'
+dmrtPlot$amplexusAll[dmrtPlot$amplexusAll=='AD2'] <- 'A'
+dmrtPlot$amplexusAll[dmrtPlot$amplexusAll=='AD'] <- 'A'
+dmrtPlot2 <- subset(dmrtPlot, dmrtPlot$amplexusAll=='A' | dmrtPlot$amplexusAll=='N')
+dmrtPlot2$amplexusAll <- factor(dmrtPlot2$amplexusAll)
+sjt.xtab(dmrtPlot2$genodiff, dmrtPlot2$amplexusAll, title='Continency table of Y differentiation by year', show.row.prc=T, show.legend=T, show.summary=T, file=file.path(outpath, 'contingency_genodiff_amplexusAll.html'))
+sjt.xtab(dmrtPlot2$genodmrt, dmrtPlot2$amplexusAll, title='Continency table of Y differentiation by year', show.row.prc=T, show.legend=T, show.summary=T, file=file.path(outpath, 'contingency_genodmrt_amplexusAll.html'))
 
 ## Just extreme best and worst genotypes
-XXXYB1data <- subset(dmrtPlot, dmrtPlot$genodmrt=='XX' | dmrtPlot$genodmrt=='YB1')
+XXXYB1data <- subset(normalPlexusData, normalPlexusData$genodmrt=='XX' | normalPlexusData$genodmrt=='YB1')
 XXXYB1data$genodmrt <- factor(XXXYB1data$genodmrt)
-sjt.xtab(XXXYB1data$genodiff, XXXYB1data$amplexusAll, title='Continency table of Y differentiation by year', show.row.prc=T, show.legend=T, show.summary=T, file=file.path(outpath, 'contingency_genodiff_amplexusXXXYB1.html'))
-sjt.xtab(XXXYB1data$genodmrt, XXXYB1data$amplexusAll, title='Continency table of Y differentiation by year', show.row.prc=T, show.legend=T, show.summary=T, file=file.path(outpath, 'contingency_genodmrt_amplexusXXXYB1.html'))
+sjt.xtab(XXXYB1data$genodiff, XXXYB1data$amplexus, title='Continency table of Y differentiation by year', show.row.prc=T, show.legend=T, show.summary=T, file=file.path(outpath, 'contingency_genodiff_amplexusXXXYB1.html'))
+sjt.xtab(XXXYB1data$genodmrt, XXXYB1data$amplexus, title='Continency table of Y differentiation by year', show.row.prc=T, show.legend=T, show.summary=T, file=file.path(outpath, 'contingency_genodmrt_amplexusXXXYB1.html'))
 
 sjt.xtab(dmrtPlot$genodmrt, dmrtPlot$genodiff, title='Continency table of genodmrt by genodiff', show.row.prc=T, show.legend=T, show.summary=T, file=file.path(outpath, 'contingency_genodmrt_genodiff.html'))
 # ?sjt.xtab
@@ -129,12 +134,12 @@ anova(AN_typemod, test='Chisq') # YB2a stands out with p=0.0857, or 0.0656 if al
 
 tab_model(AN_genomod, AN_dmrtmod, AN_typemod)
 
-# Phenotypic analysis
+# Phenotypic analysis - change to dmrtPlot2 to include amplexus with dead individuals.
 pheno2014 <- subset(normalPlexusData, normalPlexusData$year=='2014')
-# pheno2014 <- subset(normalPlexusData, normalPlexusData$year=='2014' & normalPlexusData$amplexus!='A')
+# pheno2014 <- subset(dmrtPlot2, dmrtPlot2$year=='2014' & dmrtPlot2$amplexus!='A')
 phenoNot2014 <- subset(normalPlexusData, normalPlexusData$year!='2014')
 phenoData <- rbind(pheno2014, phenoNot2014)
-phenoData$genodiff <- relevel(phenoData$genodiff, ref=3) # level 1 is now undiff
+phenoData$genodiff <- relevel(normalPlexusData$genodiff, ref=3) # level 1 is now undiff
 
 boxplot(pheno2014$w[pheno2014$day=='A'], pheno2014$w[pheno2014$day=='B'], pheno2014$w[pheno2014$day=='C'], pheno2014$w[pheno2014$day=='D'], pheno2014$w[pheno2014$day=='E'], pheno2014$w[pheno2014$day=='F'], pheno2014$w[pheno2014$day=='G'], pheno2014$w[pheno2014$day=='H'], pheno2014$w[pheno2014$day=='I'], pheno2014$w[pheno2014$day=='J'], main="2014 weight by collection day (last 3 are amplexus)", ylab="weight", xlab="day")
 
